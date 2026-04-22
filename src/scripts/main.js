@@ -48,6 +48,10 @@ function setLanguage(lang) {
     el.textContent = el.dataset[lang] ?? el.dataset.en;
   });
 
+  // Update lang toggle button label to show active lang
+  const langBtn = document.getElementById('lang-toggle');
+  if (langBtn) langBtn.textContent = lang.toUpperCase();
+
   formatDates(lang);
 }
 
@@ -83,10 +87,6 @@ const myBtn = document.getElementById('myBtn');
 
 window.addEventListener('scroll', () => {
   if (myBtn) myBtn.style.display = window.scrollY > 20 ? 'block' : 'none';
-
-  if (window.innerWidth <= 991) {
-    document.querySelector('.navbar').classList.toggle('hidden', window.scrollY > prevScrollY);
-  }
   prevScrollY = window.scrollY;
 });
 
@@ -144,9 +144,11 @@ function setTheme(theme) {
   } else {
     document.documentElement.removeAttribute('data-theme');
   }
-  const icon = document.getElementById('theme-icon');
-  if (icon) {
-    icon.className = theme === 'light' ? 'las la-moon' : 'las la-sun';
+  const sunIcon = document.getElementById('icon-sun');
+  const moonIcon = document.getElementById('icon-moon');
+  if (sunIcon && moonIcon) {
+    sunIcon.style.display = theme === 'dark' ? 'flex' : 'none';
+    moonIcon.style.display = theme === 'light' ? 'flex' : 'none';
   }
 }
 
@@ -159,6 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       setLanguage(btn.dataset.langCode);
     });
+  });
+
+  document.getElementById('lang-toggle')?.addEventListener('click', () => {
+    setLanguage(currentLang === 'en' ? 'es' : 'en');
   });
 
   document.getElementById('cv')?.addEventListener('click', openCVModal);
