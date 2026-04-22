@@ -1,0 +1,160 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ArticleTOC from '../components/ArticleTOC.astro';
+import ShareBar from '../components/ShareBar.astro';
+
+interface Props {
+  lang: string;
+  title: string;
+  description: string;
+  canonicalUrl: string;
+  tag: string;
+  formattedDate: string;
+  readMinutes: number;
+  sections: { id: string; label: string }[];
+  translatedUrl: string;
+  whatsappUrl: string;
+  linkedinUrl: string;
+  twitterUrl: string;
+  telegramUrl: string;
+  nextPost?: {
+    slug: string;
+    title: string;
+    desc: string;
+    tag: string;
+    readMinutes: number;
+  };
+}
+
+const {
+  lang, title, description, canonicalUrl, tag, formattedDate,
+  readMinutes, sections, translatedUrl, whatsappUrl, linkedinUrl,
+  twitterUrl, telegramUrl, nextPost,
+} = Astro.props;
+
+const backLabel = lang === 'es' ? 'Volver' : 'Back';
+const readLabel = lang === 'es' ? `${readMinutes} min de lectura` : `${readMinutes} min read`;
+const nextLabel = lang === 'es' ? 'Siguiente artículo' : 'Next article';
+const readMore  = lang === 'es' ? 'Leer' : 'Read';
+---
+
+<BaseLayout
+  title={`${title} — Franco Ibañez`}
+  description={description}
+  canonicalUrl={canonicalUrl}
+>
+  <header class="ap-topbar">
+    <div id="ap-progress" class="ap-progress"></div>
+    <div class="ap-topbar-inner">
+      <a href="/#blog" class="ap-back" aria-label={backLabel}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        {backLabel}
+      </a>
+      <div class="ap-topbar-actions">
+        <button class="icon-btn lang-btn" id="lang-toggle" aria-label="Switch language">
+          {lang.toUpperCase()}
+        </button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <span id="icon-sun" style="display:none; align-items:center; justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+          </span>
+          <span id="icon-moon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="ap-layout">
+    <ArticleTOC sections={sections} lang={lang} />
+
+    <article class="ap-article" data-translated-url={translatedUrl}>
+      <header class="ap-hero">
+        <div class="ap-hero-meta">
+          <span class="ap-tag">#{tag}</span>
+          <span class="ap-meta-dot">·</span>
+          <span>{formattedDate}</span>
+          <span class="ap-meta-dot">·</span>
+          <span>{readLabel}</span>
+        </div>
+        <h1 class="ap-title">{title}</h1>
+        <p class="ap-desc">{description}</p>
+        <div class="ap-hero-rule"></div>
+      </header>
+
+      <div class="ap-body">
+        <slot />
+      </div>
+
+      <ShareBar
+        lang={lang}
+        whatsappUrl={whatsappUrl}
+        linkedinUrl={linkedinUrl}
+        twitterUrl={twitterUrl}
+        telegramUrl={telegramUrl}
+      />
+
+      {nextPost && (
+        <div class="ap-next">
+          <div class="ap-next-label">{nextLabel}</div>
+          <a href={`/${nextPost.slug}/`} class="ap-next-card">
+            <div class="ap-next-tag">#{nextPost.tag} · {nextPost.readMinutes} min</div>
+            <div class="ap-next-title">{nextPost.title}</div>
+            <div class="ap-next-desc">{nextPost.desc}</div>
+            <span class="ap-next-arrow">
+              {readMore}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      )}
+    </article>
+
+    <aside class="ap-right-rail" aria-hidden="true"></aside>
+  </main>
+
+  <script>
+    // Reading progress bar
+    const progress = document.getElementById('ap-progress') as HTMLElement | null;
+    if (progress) {
+      const update = () => {
+        const scrolled = window.scrollY;
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+      };
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+
+    // Inject numbered spans + anchor links into H2s
+    document.querySelectorAll<HTMLElement>('.ap-body h2[id]').forEach((h2, i) => {
+      const numSpan = document.createElement('span');
+      numSpan.className = 'ap-h2-num';
+      numSpan.textContent = String(i + 1).padStart(2, '0');
+      numSpan.setAttribute('aria-hidden', 'true');
+
+      const anchor = document.createElement('a');
+      anchor.className = 'ap-anchor';
+      anchor.href = '#' + h2.id;
+      anchor.setAttribute('aria-hidden', 'true');
+      anchor.textContent = '#';
+      anchor.addEventListener('click', e => {
+        e.preventDefault();
+        navigator.clipboard?.writeText(location.origin + location.pathname + '#' + h2.id).catch(() => {});
+        history.pushState(null, '', '#' + h2.id);
+      });
+
+      h2.prepend(numSpan);
+      h2.appendChild(anchor);
+    });
+  </script>
+</BaseLayout>

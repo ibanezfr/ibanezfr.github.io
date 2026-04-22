@@ -3,6 +3,7 @@ title: "Automating repetitive tasks with Python"
 desc: "A practical intro to scripting daily workflows using Python's standard library."
 date: 2026-04-15
 tags: python
+translationKey: python-automation
 ---
 
 ## Demo

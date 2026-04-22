@@ -1,15 +1,6 @@
 ---
-/**
- * Individual blog post page.
- * Only generates routes for posts WITHOUT an external `url` field.
- * External posts link directly to their URL and don't get a local page.
- *
- * To host a post here: create a .md file in src/content/blog/en/ (or es/)
- * WITHOUT the `url` field. Write the content in Markdown below the frontmatter.
- */
 import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Navbar from '../components/Navbar.astro';
+import ArticleLayout from '../layouts/ArticleLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.url);
@@ -20,17 +11,54 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 const lang = post.id.startsWith('es/') ? 'es' : 'en';
 
+// Translated URL for language switching
 const otherLang = lang === 'en' ? 'es' : 'en';
-const baseSlug = post.slug.replace(/^(en|es)\//, '');
+const baseSlug  = post.slug.replace(/^(en|es)\//, '');
 const allHosted = await getCollection('blog', ({ data }) => !data.url);
-const otherPost = allHosted.find(p =>
-  p.id.startsWith(otherLang + '/') && p.slug.replace(/^(en|es)\//, '') === baseSlug
-);
+const otherPost = allHosted.find(p => {
+  if (!p.id.startsWith(otherLang + '/')) return false;
+  if (post.data.translationKey && p.data.translationKey)
+    return p.data.translationKey === post.data.translationKey;
+  return p.slug.replace(/^(en|es)\//, '') === baseSlug;
+});
 const translatedUrl = otherPost ? `/${otherPost.slug}/` : '/#blog';
-const canonicalUrl = `https://ibanezfr.github.io/${post.slug}/`;
+const canonicalUrl  = `https://ibanezfr.github.io/${post.slug}/`;
+
+// Read time
+const wordCount   = post.body.split(/\s+/).filter(Boolean).length;
+const readMinutes = Math.max(1, Math.round(wordCount / 200));
+
+// Formatted date: DD mmm YYYY
+const MONTHS = {
+  en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  es: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+};
+const d = post.data.date;
+const formattedDate = `${d.getDate()} ${MONTHS[lang as 'en' | 'es'][d.getMonth()]} ${d.getFullYear()}`;
+
+// TOC from H2 headings
+const sections = headings
+  .filter(h => h.depth === 2)
+  .map(h => ({ id: h.slug, label: h.text }));
+
+// Next post by date ascending in same lang (skip if only one post)
+const sameLang = allHosted
+  .filter(p => p.id.startsWith(lang + '/'))
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+const idx    = sameLang.findIndex(p => p.slug === post.slug);
+const nextRaw = sameLang[idx + 1] ?? sameLang[0];
+const nextPost = nextRaw && nextRaw.slug !== post.slug ? {
+  slug:        nextRaw.slug,
+  title:       nextRaw.data.title,
+  desc:        nextRaw.data.desc,
+  tag:         nextRaw.data.tags,
+  readMinutes: Math.max(1, Math.round(nextRaw.body.split(/\s+/).filter(Boolean).length / 200)),
+} : undefined;
+
+// Share URLs
 const encodedUrl   = encodeURIComponent(canonicalUrl);
 const encodedTitle = encodeURIComponent(post.data.title);
 const whatsappUrl  = `https://wa.me/?text=${encodeURIComponent(post.data.title + ' — ' + canonicalUrl)}`;
@@ -39,78 +67,21 @@ const twitterUrl   = `https://twitter.com/intent/tweet?text=${encodedTitle}&url=
 const telegramUrl  = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`;
 ---
 
-<BaseLayout
-  title={`${post.data.title} — Franco Ibañez`}
+<ArticleLayout
+  lang={lang}
+  title={post.data.title}
   description={post.data.desc}
-  canonicalUrl={`https://ibanezfr.github.io/${post.slug}/`}
+  canonicalUrl={canonicalUrl}
+  tag={post.data.tags}
+  formattedDate={formattedDate}
+  readMinutes={readMinutes}
+  sections={sections}
+  translatedUrl={translatedUrl}
+  whatsappUrl={whatsappUrl}
+  linkedinUrl={linkedinUrl}
+  twitterUrl={twitterUrl}
+  telegramUrl={telegramUrl}
+  nextPost={nextPost}
 >
-  <Navbar />
-  <button onclick="topFunction()" id="myBtn" title="Go to top">
-    <span class="vertical-text">»</span>
-  </button>
-  <div id="content-wrapper">
-    <article class="container py-5" style="padding-top: 5rem !important;" data-translated-url={translatedUrl}>
-      <a href="/" class="btn btn-brand mb-4" style="font-size: 0.85rem;">← { lang === 'es' ? 'Volver' : 'Back' }</a>
-      <div style="text-align: center; margin-bottom: 2.5rem;">
-        <h1 class="display-4 fw-bold mb-2" style="color: var(--python-yellow)">{post.data.title}</h1>
-        <p style="color: var(--text-secondary); margin-bottom: 0; font-size: 1.1rem;">{post.data.desc}</p>
-      </div>
-      <hr style="border-color: rgba(56,189,248,0.15); margin-bottom: 2rem">
-      <div class="article-content">
-        <Content />
-      </div>
-
-      <hr style="border-color: rgba(56,189,248,0.12); margin: 2.5rem 0 1.5rem">
-      <div class="share-bar">
-        <span class="share-label" data-en="Share:" data-es="Compartir:">
-          { lang === 'es' ? 'Compartir:' : 'Share:' }
-        </span>
-        <button class="share-btn" id="copy-link-btn" title={ lang === 'es' ? 'Copiar enlace' : 'Copy link' }>
-          <i class="las la-link"></i>
-        </button>
-        <a class="share-btn" href={whatsappUrl} target="_blank" rel="noopener noreferrer" title="WhatsApp">
-          <i class="lab la-whatsapp"></i>
-        </a>
-        <a class="share-btn" href={linkedinUrl} target="_blank" rel="noopener noreferrer" title="LinkedIn">
-          <i class="lab la-linkedin"></i>
-        </a>
-        <a class="share-btn" href={twitterUrl} target="_blank" rel="noopener noreferrer" title="X">
-          <span class="share-x-icon">𝕏</span>
-        </a>
-        <a class="share-btn" href={telegramUrl} target="_blank" rel="noopener noreferrer" title="Telegram">
-          <i class="lab la-telegram"></i>
-        </a>
-      </div>
-    </article>
-  </div>
-<script>
-  const btn  = document.getElementById('copy-link-btn');
-  const icon = btn?.querySelector('i');
-  const isEs = window.location.pathname.startsWith('/es/');
-
-  if (btn && icon) {
-    const isMobile = window.innerWidth < 768;
-
-    if (navigator.share && isMobile) {
-      // Mobile: native share sheet
-      btn.title = isEs ? 'Compartir' : 'Share';
-
-      btn.addEventListener('click', () => {
-        navigator.share({
-          title: document.title,
-          text:  document.querySelector('meta[name="description"]')?.content ?? '',
-          url:   window.location.href,
-        }).catch(() => {}); // user dismissed — ignore
-      });
-    } else {
-      // Desktop: copy to clipboard
-      btn.addEventListener('click', () => {
-        navigator.clipboard.writeText(window.location.href).then(() => {
-          icon.className = 'las la-check';
-          setTimeout(() => { icon.className = 'las la-link'; }, 2000);
-        });
-      });
-    }
-  }
-</script>
-</BaseLayout>
+  <Content />
+</ArticleLayout>

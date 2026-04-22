@@ -3,6 +3,7 @@ title: "Automatizando tareas repetitivas con Python"
 desc: "Una introducción práctica para convertir flujos de trabajo manuales en scripts de una sola línea."
 date: 2026-04-15
 tags: python
+translationKey: python-automation
 ---
 
 ## Demo

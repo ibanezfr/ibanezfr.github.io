@@ -1,0 +1,55 @@
+---
+interface Props {
+  sections: { id: string; label: string }[];
+  lang: string;
+}
+const { sections, lang } = Astro.props;
+const tocLabel = lang === 'es' ? 'En esta página' : 'On this page';
+---
+
+{sections.length > 0 && (
+  <aside class="ap-toc" aria-label="Tabla de contenidos">
+    <div class="ap-toc-label">{tocLabel}</div>
+    <ol class="ap-toc-list">
+      {sections.map((s, i) => (
+        <li>
+          <a href={`#${s.id}`}>
+            <span class="ap-toc-num">{String(i + 1).padStart(2, '0')}</span>
+            <span>{s.label}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}
+
+<script>
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.ap-toc-list a');
+  if (tocLinks.length > 0 && 'IntersectionObserver' in window) {
+    const visibleIds = new Set<string>();
+    const allH2s = [...document.querySelectorAll<HTMLElement>('.ap-body h2[id]')];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) visibleIds.add(e.target.id);
+          else visibleIds.delete(e.target.id);
+        });
+        // Highlight topmost visible heading
+        let activeId: string | null = null;
+        for (const h of allH2s) {
+          if (visibleIds.has(h.id)) { activeId = h.id; break; }
+        }
+        tocLinks.forEach(a => {
+          a.parentElement?.classList.toggle(
+            'is-active',
+            a.getAttribute('href') === '#' + activeId
+          );
+        });
+      },
+      { rootMargin: '-15% 0px -70% 0px', threshold: 0 }
+    );
+
+    allH2s.forEach(h => observer.observe(h));
+  }
+</script>

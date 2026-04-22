@@ -1,0 +1,37 @@
+---
+// ShortcutTable — keycap component for MDX posts.
+// rows: { keys: "Ctrl + A / Esc + A", desc: "Description with optional <b>bold</b>" }[]
+interface Row { keys: string; desc: string }
+const { rows } = Astro.props as { rows: Row[] };
+
+function parseKeys(s: string): string[][] {
+  return s.split('/').map(alt =>
+    alt.trim().split('+').map(k => k.trim()).filter(Boolean)
+  );
+}
+---
+<div class="ap-stable">
+  {rows.map(r => {
+    const alts = parseKeys(r.keys);
+    return (
+      <div class="ap-stable-row">
+        <div class="ap-stable-keys">
+          <span class="ap-kbdseq">
+            {alts.map((alt, i) => (
+              <>
+                {i > 0 && <span class="ap-kbd-or">/</span>}
+                {alt.map((k, j) => (
+                  <>
+                    {j > 0 && <span class="ap-kbd-plus">+</span>}
+                    <kbd class="ap-kbd">{k}</kbd>
+                  </>
+                ))}
+              </>
+            ))}
+          </span>
+        </div>
+        <div class="ap-stable-desc" set:html={r.desc} />
+      </div>
+    );
+  })}
+</div>
