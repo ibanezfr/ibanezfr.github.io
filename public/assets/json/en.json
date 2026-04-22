@@ -1,0 +1,85 @@
+{
+  "title": "Franco Ibañez | Python Developer & AI Researcher",
+  "author-name": "Franco Ezequiel Ibañez",
+  "html-lang": "en",
+  "blog-section": "BLOG",
+  "first-eye": "<span id='first-eye'>Python Developer</span> & AI Researcher",
+  "translations": {
+    "footer-p": "Franco E. Ibañez 2026",
+    "blog-section-h1": "Articles:",
+    "blog-btn-2": "Blog",
+    "cv": "See Resume",
+    "first-eye-h1": "Franco Ezequiel Ibañez",
+    "home-btn": "Home",
+    "blog-btn": "Blog",
+    "languageBtn": "Language"
+  },
+  "formatDaysAgo": {
+    "today": "Today",
+    "day": " day",
+    "days": " days",
+    "week": " week",
+    "weeks": " weeks",
+    "month": " month",
+    "months": " months",
+    "year": " year",
+    "years": " years",
+    "ago": " ago"
+  },
+  "categories": [
+    "typing",
+    "browser",
+    "terminal"
+  ],
+  "articles": [
+    {
+      "title": "Why should you learn touch typing in 2024?",
+      "desc": "Promoting the importance of touch typing skills.",
+      "tags": "typing",
+      "date": "2024-06-12",
+      "url": "https://www.linkedin.com/pulse/why-should-you-learn-touch-typing-2024-franco-iba%25C3%25B1ez-2ox3f"
+    },
+    {
+      "title": "Save Time on LinkedIn Searches: Keyboard Shortcuts Guide",
+      "desc": "About how to create a shortcut in the browser's search bar.",
+      "tags": "browser",
+      "date": "2024-04-01",
+      "url": "https://www.linkedin.com/pulse/save-time-linkedin-searches-keyboard-shortcuts-guide-franco-iba%25C3%25B1ez-smh7f"
+    },
+    {
+      "title": "Terminal Shortcuts 1",
+      "desc": "To navigate more efficiently in the command line.",
+      "tags": "terminal",
+      "date": "2024-03-30",
+      "url": "https://www.linkedin.com/pulse/terminal-shortcuts-1-franco-iba%25C3%25B1ez-mfjpf"
+    },
+    {
+      "title": "Terminal Shortcuts 2",
+      "desc": "To edit more effectively in the command line.",
+      "tags": "terminal",
+      "date": "2024-03-30",
+      "url": "https://www.linkedin.com/pulse/terminal-shortcuts-2-franco-iba%25C3%25B1ez-mpftf"
+    },
+    {
+      "title": "Terminal Shortcuts 3",
+      "desc": "To make better use of the command history.",
+      "tags": "terminal",
+      "date": "2024-03-30",
+      "url": "https://www.linkedin.com/pulse/terminal-shortcuts-3-franco-iba%25C3%25B1ez-akzpf"
+    },
+    {
+      "title": "Terminal Shortcuts 4",
+      "desc": "To make better use of the command history.",
+      "tags": "terminal",
+      "date": "2024-03-30",
+      "url": "https://www.linkedin.com/pulse/terminal-shortcuts-4-franco-iba%25C3%25B1ez-g3enf"
+    },
+    {
+      "title": "Terminal Shortcuts 5",
+      "desc": "To manage running processes.",
+      "tags": "terminal",
+      "date": "2024-03-30",
+      "url": "https://www.linkedin.com/pulse/terminal-shortcuts-5-franco-iba%25C3%25B1ez-htqpf"
+    }
+  ]
+}

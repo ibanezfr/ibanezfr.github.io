@@ -1,0 +1,134 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+
+const enPosts = posts
+  .filter(p => p.id.startsWith('en/'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const esPosts = posts
+  .filter(p => p.id.startsWith('es/'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const enTags = [...new Set(enPosts.map(p => p.data.tags))];
+const esTags = [...new Set(esPosts.map(p => p.data.tags))];
+---
+
+<section id="blog" class="full-height px-lg-5">
+
+  <!-- ── English ──────────────────────────────── -->
+  <div data-lang-section="en">
+    <div class="container">
+      <div class="row pb-4" data-aos="zoom-in-right">
+        <div class="col-lg-8">
+          <div class="section-header text-brand">BLOG</div>
+          <h1>Articles:</h1>
+        </div>
+      </div>
+      <div class="accordion" id="tagAccordion-en" data-aos="zoom-in-up" data-aos-delay="300">
+        {enTags.map((tag, i) => (
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class={`accordion-button${i !== 0 ? ' collapsed' : ''}`}
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target={`#en-collapse-${i}`}
+                aria-expanded={i === 0 ? 'true' : 'false'}
+                aria-controls={`en-collapse-${i}`}
+              >
+                #{tag}
+              </button>
+            </h2>
+            <div
+              id={`en-collapse-${i}`}
+              class={`accordion-collapse collapse${i === 0 ? ' show' : ''}`}
+              data-bs-parent="#tagAccordion-en"
+            >
+              <div class="accordion-body">
+                <ol class="list-group">
+                  {enPosts.filter(p => p.data.tags === tag).map(post => (
+                    <a
+                      class="list-group-item list-group-item-action"
+                      href={post.data.url ?? `/${post.slug}`}
+                      target={post.data.url ? '_blank' : undefined}
+                      rel={post.data.url ? 'noopener noreferrer' : undefined}
+                    >
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1 articleTitle">{post.data.title}</h5>
+                        <small class="post-date" data-date={post.data.date.toISOString()}></small>
+                      </div>
+                      <p class="mb-1 articleSubTitle">{post.data.desc}</p>
+                      <small class="text-body-secondary articleTags">#{post.data.tags}</small>
+                    </a>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Español ──────────────────────────────── -->
+  <div data-lang-section="es" hidden>
+    <div class="container">
+      <div class="row pb-4" data-aos="zoom-in-right">
+        <div class="col-lg-8">
+          <div class="section-header text-brand">BLOG</div>
+          <h1>Artículos:</h1>
+        </div>
+      </div>
+      <div class="accordion" id="tagAccordion-es" data-aos="zoom-in-up" data-aos-delay="300">
+        {esTags.map((tag, i) => (
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class={`accordion-button${i !== 0 ? ' collapsed' : ''}`}
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target={`#es-collapse-${i}`}
+                aria-expanded={i === 0 ? 'true' : 'false'}
+                aria-controls={`es-collapse-${i}`}
+              >
+                #{tag}
+              </button>
+            </h2>
+            <div
+              id={`es-collapse-${i}`}
+              class={`accordion-collapse collapse${i === 0 ? ' show' : ''}`}
+              data-bs-parent="#tagAccordion-es"
+            >
+              <div class="accordion-body">
+                <ol class="list-group">
+                  {esPosts.filter(p => p.data.tags === tag).map(post => (
+                    <a
+                      class="list-group-item list-group-item-action"
+                      href={post.data.url ?? `/${post.slug}`}
+                      target={post.data.url ? '_blank' : undefined}
+                      rel={post.data.url ? 'noopener noreferrer' : undefined}
+                    >
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1 articleTitle">{post.data.title}</h5>
+                        <small class="post-date" data-date={post.data.date.toISOString()}></small>
+                      </div>
+                      <p class="mb-1 articleSubTitle">{post.data.desc}</p>
+                      <small class="text-body-secondary articleTags">#{post.data.tags}</small>
+                    </a>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+</section>

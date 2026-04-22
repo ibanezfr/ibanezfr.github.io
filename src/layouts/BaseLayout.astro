@@ -1,0 +1,60 @@
+---
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'aos/dist/aos.css';
+import 'line-awesome/dist/line-awesome/css/line-awesome.min.css';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+}
+
+const SITE_URL = 'https://ibanezfr.github.io';
+const DEFAULT_TITLE = 'Franco Ibañez | Python Developer · AI Researcher';
+const DEFAULT_DESC = 'Franco Ibañez — Python Developer · AI Researcher. Building AI-powered tools and automations.';
+
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESC,
+  canonicalUrl = SITE_URL,
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en" id="html-lang">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+
+  <meta name="description" content={description}>
+  <meta name="author" content="Franco Ezequiel Ibañez">
+  <link rel="canonical" href={canonicalUrl}>
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={`${SITE_URL}/og-image.png`}>
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={`${SITE_URL}/og-image.png`}>
+
+  <link rel="icon" href="/og-image.png" type="image/svg+xml">
+  <script is:inline>
+    (function() {
+      if (localStorage.getItem('theme') === 'light')
+        document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+</head>
+<body data-bs-spy="scroll" data-bs-target=".navbar">
+  <slot />
+  <script>
+    import '../scripts/main.js';
+  </script>
+</body>
+</html>

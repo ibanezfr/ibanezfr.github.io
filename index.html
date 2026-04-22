@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="" id="html-lang">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title"></title>
+
+    <!-- SEO -->
+    <meta name="description" content="Franco Ibañez — Python Developer & AI Analyst. Systems Engineering student building AI-powered tools and automations.">
+    <meta name="author" content="Franco Ezequiel Ibañez">
+    <link rel="canonical" href="https://ibanezfr.github.io">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ibanezfr.github.io">
+    <meta property="og:title" content="Franco Ibañez | Python Developer & AI Analyst">
+    <meta property="og:description" content="Portfolio and blog by Franco Ibañez — Python Developer & AI Analyst.">
+    <meta property="og:image" content="https://ibanezfr.github.io/images/profile-pic-03.webp">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Franco Ibañez | Python Developer & AI Analyst">
+    <meta name="twitter:description" content="Portfolio and blog by Franco Ibañez — Python Developer & AI Analyst.">
+    <meta name="twitter:image" content="https://ibanezfr.github.io/images/profile-pic-03.webp">
+
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
+    <script type="module" src="/src/main.js"></script>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar">
+    <!-- Back to Top button-->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <span class="vertical-text">»</span>
+    </button>
+    <!-- //Back to Top button-->
+
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container flex-lg-column" id="left-menu">
+            <a class="navbar-brand mx-lg-auto mb-lg-4" href="#home">
+                <span class="h3 fw-bold d-block d-lg-none" id="author-name"></span>
+                <img src="/images/profile-pic-03.webp" class="d-none d-lg-block rounded-circle"
+                    id="persona1" width="190" height="190" alt="Franco Ibañez">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto flex-lg-column text-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home" onclick="collapseNavbar()" id="home-btn"></a>
+                        <a class="nav-link" href="#blog" onclick="collapseNavbar()" id="blog-btn"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                            aria-expanded="false" id="languageBtn" aria-label="Select language"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-lang-code="en">English 🇬🇧</a></li>
+                            <li><a class="dropdown-item" href="#" data-lang-code="es">Español 🇪🇸</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- //NavBar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper">
+        <div id="cvModal" class="cv-modal">
+            <div class="cv-modal-content">
+                <div class="cv-modal-header">
+                    <button type="button" class="cv-close-btn" onclick="closeCVModal()" aria-label="Close CV">
+                        &times;
+                    </button>
+                </div>
+                <div class="cv-modal-body" id="cvModalBody">
+                    <!-- CV content injected here -->
+                </div>
+            </div>
+        </div>
+        <!-- Home -->
+        <section class="full-height px-lg-5" id="home">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 header-container" id="main-message">
+                        <div class="main-header">
+                            <h1 class="display-4 fw-bold mt-2 mb-4" data-aos="zoom-in-right" id="first-eye-h1"></h1>
+                            <h2 data-aos="zoom-in-right" data-aos-delay="200" id="first-eye-h2"></h2>
+                        </div>
+                        <div class="tech-tags" data-aos="zoom-in-right" data-aos-delay="300">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">AI / ML</span>
+                            <span class="tech-tag">Data Analysis</span>
+                            <span class="tech-tag">Automation</span>
+                        </div>
+                        <div class="home-buttons">
+                            <div data-aos="zoom-in-right" data-aos-delay="400">
+                                <a href="#" target="_blank" class="btn btn-brand me-3 mb-4" id="cv"></a>
+                            </div>
+                            <div data-aos="zoom-in-right" data-aos-delay="500">
+                                <a href="#blog" class="btn btn-brand me-3" id="blog-btn-2"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- //Home -->
+
+        <!-- Blog -->
+        <section id="blog" class="full-height px-lg-5">
+            <div class="container">
+                <div class="row pb-4" data-aos="zoom-in-right">
+                    <div class="col-lg-8">
+                        <div class="section-header text-brand"></div>
+                        <h1 id="blog-section-h1"></h1>
+                    </div>
+                </div>
+                <div class="accordion" id="tagAccordion" data-aos="zoom-in-up" data-aos-delay="500">
+                </div>
+            </div>
+        </section>
+        <!-- //Blog-->
+
+        <!-- Footer -->
+        <section id="footer">
+            <div class="py-5 px-lg-5">
+                <div class="contain">
+                    <div class="row gy-4 justify-content-between">
+                        <div class="col-auto">
+                            <div class="mb-0 text-brand">
+                                <p id="footer-p"></p>
+                            </div>
+                        </div>
+                        <div id="socials-footer" class="col-auto">
+                            <div class="social-icons-footer">
+                                <a href="https://www.linkedin.com/in/ibanezfr" target="_blank"
+                                    rel="noopener noreferrer" aria-label="LinkedIn">
+                                    <i class="lab la-linkedin"></i>
+                                </a>
+                                <a href="https://github.com/ibanezfr" target="_blank" rel="noopener noreferrer"
+                                    aria-label="GitHub">
+                                    <i class="lab la-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- //Footer -->
+
+    </div>
+    <!-- //Content Wrapper -->
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+---
+const isHome = Astro.url.pathname === '/';
+const homeHref = isHome ? '#home' : '/#home';
+const blogHref = isHome ? '#blog' : '/#blog';
+---
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container flex-lg-column" id="left-menu">
+    <a class="navbar-brand mx-lg-auto mb-lg-4" href="#home">
+      <span class="h3 fw-bold d-block d-lg-none" id="author-name">Franco E. Ibañez</span>
+      <img
+        src="/images/profile-pic-03.webp"
+        class="d-none d-lg-block rounded-circle"
+        id="persona1"
+        width="190"
+        height="190"
+        alt="Franco Ibañez"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto flex-lg-column text-lg-center">
+        <li class="nav-item">
+          <a class="nav-link" href={homeHref} onclick="collapseNavbar()" data-en="Home" data-es="Inicio">Home</a>
+          <a class="nav-link" href={blogHref} onclick="collapseNavbar()" data-en="Blog" data-es="Blog">Blog</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-expanded="false"
+            aria-label="Select language"
+            data-en="Language"
+            data-es="Idioma"
+          >Language</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" data-lang-code="en">English 🇬🇧</a></li>
+            <li><a class="dropdown-item" href="#" data-lang-code="es">Español 🇪🇸</a></li>
+          </ul>
+        </li>
+        <li class="nav-item mt-lg-3 d-flex justify-content-center">
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle light/dark theme">
+            <i id="theme-icon" class="las la-sun"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,8 @@
+# recaptcha file
+keys.txt
+
+node_modules/
+dist/
+.astro/
+.claude/
+CLAUDE.md

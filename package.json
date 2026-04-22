@@ -1,0 +1,19 @@
+{
+  "name": "ibanezfr-portfolio",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Personal portfolio — Python Developer & AI Analyst",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "aos": "^2.3.4",
+    "bootstrap": "^5.3.3",
+    "line-awesome": "^1.3.0"
+  }
+}
